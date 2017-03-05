@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Todo List</title>
+	{% load staticfiles %}
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/todo.css'%}"/>
+	<script type="text/javascript" src="{% static 'js/todo.js'%}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js'%}"></script>
+</head>
+<body>
+<h1>My todo list:</h1>
+	{% for error in errors %}
+		<div class="error">{{error}}</div>
+	{% endfor %}
+
+	<p>
+		Current todos:
+		{% if items|length == 0 %}
+			<div style="color:red;">No items added.</div>
+		{% else %}
+			<ol id="todo-list">
+				{% for item in items %}
+					<li>
+						<form action="/todolist/delete-item" method="POST" style="display:inline;">
+							<input type="hidden" value='{{item.id}}' name="item_id">
+							<input type="submit" value="X">
+							{% csrf_token %}
+						</form>
+						{{item.text}}
+					</li>
+				{% endfor %}
+			</ol>
+		{% endif %}
+	</p>
+
+	<form action="/todolist/add-item" method="POST">
+		Item to add:
+		<input type="text" name="item">
+		<input type="submit" value="Add item">
+		{% csrf_token %}
+	</form>
+
+	<br>
+	
+	<div id="map"></div>
+    <script>
+      function initMap() {
+        var mtv = {lat: 37.389, lng: -122.082};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: mtv
+        });
+        var marker = new google.maps.Marker({
+          position: mtv,
+          map: map
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2XDCAaJF8gpaf7eKn0dhZxes-mFt_DqQ&callback=initMap">
+    </script>
+</body>
+</html>

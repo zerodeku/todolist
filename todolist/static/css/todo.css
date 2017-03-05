@@ -1,0 +1,12 @@
+h1 {
+	color: blue;
+}
+
+.error {
+	color: red;
+}
+
+#map {
+	height: 400px;
+	width: 50%;
+}
